@@ -77,6 +77,9 @@ app.use("/api/v1/healthcheck", healthcheckRouter);
 
 // * User APIs
 app.use("/api/v1/users", userRouter);
+app.use("/" , () => {
+    res.send("hello")
+})
 
 // * API Documentation
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
