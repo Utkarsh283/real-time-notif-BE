@@ -62,7 +62,7 @@ module.exports.getLoggedInUserOrIgnore = asyncHandler(async (req, res, next) => 
  * * This middleware is responsible for validating multiple user role permissions at a time.
  * * So, in future if we have a route which can be accessible by multiple roles, we can achieve that with this middleware
  */
-module.exports.verifyPermission = (roles = []) =>
+module.exports.verifyPermission = () =>
   asyncHandler(async (req, res, next) => {
     if (!req.user?._id) {
       throw new ApiError(401, "Unauthorized request");
@@ -84,3 +84,4 @@ module.exports.avoidInProduction = asyncHandler(async (req, res, next) => {
     );
   }
 });
+

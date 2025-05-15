@@ -59,6 +59,8 @@ const healthcheckRouter = require("./routes/healthcheck.routes.js");
 
 const userRouter = require("./routes/apps/auth/user.routes.js");
 
+const taskRouter = require("./routes/apps/tasks/task.routes.js");
+
 // * Kitchen sink routes
 const statuscodeRouter = require("./routes/kitchen-sink/statuscode.routes.js");
 
@@ -66,20 +68,26 @@ const statuscodeRouter = require("./routes/kitchen-sink/statuscode.routes.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("../swagger-output.json");
 
+const notificationRouter = require("./routes/apps/notifications/notifications.routes.js");
+
+
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
 
 // * User APIs
 app.use("/api/v1/users", userRouter);
-app.use("/" , (req,res) => {
-    res.send("hello")
-})
+
+
+//* Task APIs
+app.use("/api/v1", taskRouter);
 
 // * API Documentation
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // * Kitchen sink apis
 app.use("/api/v1/kitchen-sink/status-codes", statuscodeRouter);
+
+app.use("/api/v1/notifications", notificationRouter);
 
 app.use(errorHandler);
 
