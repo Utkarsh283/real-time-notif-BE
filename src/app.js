@@ -77,7 +77,7 @@ app.use("/api/v1/healthcheck", healthcheckRouter);
 
 // * User APIs
 app.use("/api/v1/users", userRouter);
-app.use("/" , () => {
+app.use("/" , (req,res) => {
     res.send("hello")
 })
 
