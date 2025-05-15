@@ -14,13 +14,7 @@ const app = express();
 const httpServer = createServer(app);
 
 app.use(
-    cors({
-        origin:
-            process.env.CORS_ORIGIN === "*"
-                ? "*"
-                : process.env.CORS_ORIGIN?.split(","),
-        credentials: true,
-    })
+    cors()
 );
 
 const limiter = rateLimit({
