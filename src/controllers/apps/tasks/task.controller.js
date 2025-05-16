@@ -1,10 +1,10 @@
 const Task = require("../../../models/apps/tasks/task.model.js");
 
 exports.createTask = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description , status } = req.body;
 
     try {
-        const task = await Task.create({ title, description, user: req.user._id });
+        const task = await Task.create({ title, description, status, user: req.user._id });
         res.status(201).json(task);
     } catch (error) {
         res.status(500).json({ message: "Failed to create task", error: error.message });
@@ -34,10 +34,10 @@ exports.getTaskById = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
     const { id } = req.params;
-    const { title, description } = req.body;
+    const { title, description , status } = req.body;
 
     try {
-        const task = await Task.findByIdAndUpdate(id, { title, description }, { new: true });
+        const task = await Task.findByIdAndUpdate(id, { title, description , status }, { new: true });
         if (!task) return res.status(404).json({ message: "Task not found" });
         res.json(task);
     } catch (error) {

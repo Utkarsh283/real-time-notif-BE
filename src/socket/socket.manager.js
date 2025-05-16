@@ -75,32 +75,32 @@ const setupSocket = (server) => {
     }
   });
 
-  const userChangeStream = User.watch([], { fullDocument: 'updateLookup' });
-  userChangeStream.on('change', (change) => {
-    if (change.operationType === 'insert') {
-      const newUser = change.fullDocument;
-      io.emit('new-user', newUser); 
-      console.log('Broadcasted new user:', newUser);
-    }
+  User.collection.watch([], { fullDocument: 'updateLookup' })
+    .on('change', (change) => {
+      if (change.operationType === 'insert') {
+        const newUser = change.fullDocument;
+        io.emit('new-user', newUser); 
+        console.log('Broadcasted new user:', newUser);
+      }
 
-    if (change.operationType === 'update') {
-      const updatedUser = change.fullDocument;
-      io.emit('updated-user', updatedUser); 
-      console.log('Broadcasted updated user:', updatedUser);
-    }
+      if (change.operationType === 'update') {
+        const updatedUser = change.fullDocument;
+        io.emit('updated-user', updatedUser); 
+        console.log('Broadcasted updated user:', updatedUser);
+      }
 
-    if (change.operationType === 'replace') {
-      const replacedUser = change.fullDocument;
-      io.emit('replaced-user', replacedUser); 
-      console.log('Broadcasted replaced user:', replacedUser);
-    }
+      if (change.operationType === 'replace') {
+        const replacedUser = change.fullDocument;
+        io.emit('replaced-user', replacedUser); 
+        console.log('Broadcasted replaced user:', replacedUser);
+      }
 
-    if (change.operationType === 'delete') {
-      const deletedUser = change.documentKey;
-      io.emit('deleted-user', deletedUser); 
-      console.log('Broadcasted deleted user:', deletedUser);
-    }
-  });
+      if (change.operationType === 'delete') {
+        const deletedUser = change.documentKey;
+        io.emit('deleted-user', deletedUser); 
+        console.log('Broadcasted deleted user:', deletedUser);
+      }
+    });
 };
 
 const broadcastNotification = (data) => {

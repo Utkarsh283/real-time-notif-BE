@@ -70,6 +70,9 @@ const swaggerFile = require("../swagger-output.json");
 
 const notificationRouter = require("./routes/apps/notifications/notifications.routes.js");
 
+const adminRouter = require("./routes/apps/auth/admin.routes.js");
+app.use("/api/v1/admin", adminRouter);
+
 
 // * healthcheck
 app.use("/api/v1/healthcheck", healthcheckRouter);
