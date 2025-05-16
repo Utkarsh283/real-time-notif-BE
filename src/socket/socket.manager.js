@@ -19,12 +19,30 @@ const setupSocket = (server) => {
   });
 
   // Watch MongoDB collection for inserts using Change Streams
-  const changeStream = Notification.watch([], { fullDocument: 'updateLookup' });
+ const changeStream = Notification.watch([], { fullDocument: 'updateLookup' });
   changeStream.on('change', (change) => {
     if (change.operationType === 'insert') {
       const newNotification = change.fullDocument;
       io.emit('new-notification', newNotification); 
       console.log('Broadcasted new notification:', newNotification);
+    }
+
+    if (change.operationType === 'update') {
+      const updatedNotification = change.fullDocument;
+      io.emit('updated-notification', updatedNotification); 
+      console.log('Broadcasted updated notification:', updatedNotification);
+    }
+
+    if (change.operationType === 'replace') {
+      const replacedNotification = change.fullDocument;
+      io.emit('replaced-notification', replacedNotification); 
+      console.log('Broadcasted replaced notification:', replacedNotification);
+    }
+
+    if (change.operationType === 'delete') {
+      const deletedNotification = change.documentKey;
+      io.emit('deleted-notification', deletedNotification); 
+      console.log('Broadcasted deleted notification:', deletedNotification);
     }
   });
 };
