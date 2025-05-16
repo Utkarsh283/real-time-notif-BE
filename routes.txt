@@ -1,24 +1,70 @@
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/register           (post-signup)
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/login           (post-login)
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/logout           (post-lo)
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/refresh-token           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/forgot-password           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/reset-password/:resetToken     ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/users/current-user           ()
+BASE URL = https://real-time-notif-be-a9b1.vercel.app
+
+
+🔐 User Authentication & Management APIs
+POST /api/v1/users/register
+Registers a new user by accepting credentials like name, email, and password.
+
+POST /api/v1/users/login
+Authenticates a user and returns an access token and refresh token on successful login.
+
+POST /api/v1/users/logout
+Logs the user out by clearing the authentication tokens (access & refresh tokens).
+
+GET /api/v1/users/refresh-token
+Issues a new access token using a valid refresh token.
+
+POST /api/v1/users/forgot-password
+Sends a password reset email to the user with a reset token.
+
+POST /api/v1/users/reset-password/:resetToken
+Resets the user's password using the provided token from the email.
+
+GET /api/v1/users/current-user
+Retrieves the currently logged-in user's profile information.
 
 
 
-https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications/total           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications/getHistory           ()
+
+🔔 Notification APIs
+POST /api/v1/notifications
+Creates and sends a new notification (real-time or scheduled).
+
+GET /api/v1/notifications/total
+Returns the total number of notifications for the authenticated user.
+
+GET /api/v1/notifications/getHistory
+Fetches the user's notification history, including previously received notifications.
 
 
-https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()
-https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()
+
+
+✅ Task Management APIs
+POST /api/v1/tasks/
+Creates a new task with attributes like title, description, due date, etc.
+
+GET /api/v1/tasks/
+Fetches all tasks associated with the authenticated user.
+
+GET /api/v1/tasks/:id
+Retrieves a specific task by its ID.
+
+PATCH /api/v1/tasks/:id
+Updates the specified task with new details.
+
+DELETE /api/v1/tasks/:id
+Deletes the specified task from the user's task list.
 
 
 
-https://real-time-notif-be-a9b1.vercel.app/api/v1
+
+
+🛠️ Admin APIs
+GET /api/v1/admin/users
+Retrieves a list of all registered users (admin access only).
+
+GET /api/v1/admin/tasks
+Fetches all tasks across all users (admin access only).
+
+GET /api/v1/admin/notifications
+Returns all notifications sent across the platform (admin access only).
