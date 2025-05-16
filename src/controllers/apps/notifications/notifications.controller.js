@@ -31,8 +31,12 @@ exports.postNotification = async function (req, res) {
 
 
 exports.getHistory = async function (req, res) {
+  const { role } = req.user;
+  const isAdmin = role === UserRolesEnum.ADMIN;
+
   try {
-    const notifications = await Notification.find();
+    const query = isAdmin ? {} : { users: req.user._id };
+    const notifications = await Notification.find(query);
     res.status(200).json(notifications);
   } catch (err) {
     res.status(500).json({ error: 'Server error while fetching history.' });
