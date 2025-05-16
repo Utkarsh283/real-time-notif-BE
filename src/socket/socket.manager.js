@@ -1,7 +1,5 @@
 const { Server } = require('socket.io');
 const Notification = require('../models/apps/notifications/notifications.models.js');
-const Task = require('../models/apps/tasks/task.model.js');
-const User = require('../models/apps/auth/user.models.js');
 
 let io;
 
@@ -19,13 +17,13 @@ const setupSocket = (server) => {
     emitClientCount();
 
     // Join user-specific room using MongoDB _id
-    socket.on('join', (users) => {
-      if (!users) {
+    socket.on('join', (userId) => {
+      if (!userId) {
         console.warn('User ID missing in join event');
         return;
       }
-      socket.join(users);
-      console.log(`User ${users} joined room`);
+      socket.join(userId);
+      console.log(`User ${userId} joined room`);
     });
 
     socket.on('disconnect', () => {
@@ -50,7 +48,6 @@ const setupSocket = (server) => {
 
     users.forEach((userId) => {
       if (!userId) return;
-
       io.to(userId.toString()).emit('new-notification', newNotification);
       console.log(`📨 Notification sent to user: ${userId}`);
     });
@@ -64,10 +61,15 @@ const broadcastNotification = (notification) => {
     return;
   }
 
-  notification.users.forEach((userId) => {
-    io.to(userId.toString()).emit('notification', notification);
-    console.log(`📢 Notification broadcasted to: ${userId}`);
-  });
+  try {
+    notification.users.forEach((userId) => {
+      if (!userId) return;
+      io?.to(userId.toString())?.emit('notification', notification);
+    });
+    console.log(`  Notification broadcasted to ${notification.users.length} users`);
+  } catch (error) {
+    console.error('Error broadcasting notification:', error);
+  }
 };
 
 // Optional global task broadcast
