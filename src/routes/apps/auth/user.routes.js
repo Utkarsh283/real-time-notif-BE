@@ -4,7 +4,7 @@ const passport = require("passport");
 const {
     // assignRole,
     // changeCurrentPassword,
-    // forgotPasswordRequest,
+    forgotPasswordRequest,
     getCurrentUser,
     handleSocialLogin,
     loginUser,
@@ -12,7 +12,7 @@ const {
     refreshAccessToken,
     registerUser,
     // resendEmailVerification,
-    // resetForgottenPassword,
+    resetForgottenPassword,
     // updateUserAvatar,
     // verifyEmail,
 } = require("../../../controllers/apps/auth/user.controllers.js");
