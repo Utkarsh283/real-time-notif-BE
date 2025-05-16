@@ -11,6 +11,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const getAllTasks = asyncHandler(async (req, res) => {
+  if (!Task) {
+    throw new ApiError(500, "Task model not defined");
+  }
   const tasks = await Task.find();
   return res.status(200).json(new ApiResponse(200, tasks, "All tasks fetched successfully"));
 });
@@ -27,6 +30,8 @@ const getUserById = asyncHandler(async (req, res) => {
   }
   return res.status(200).json(new ApiResponse(200, user, "User fetched successfully"));
 });
+
+
 
 module.exports = {
   getAllUsers,
