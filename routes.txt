@@ -1,0 +1,20 @@
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/register           (post-signup)
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/login           (post-login)
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/logout           (post-lo)
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/refresh-token           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/forgot-password           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/reset-password/:resetToken     ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/users/current-user           ()
+
+
+
+https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications/total           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/notifications/getHistory           ()
+
+
+https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()
+https://real-time-notif-be-a9b1.vercel.app/api/v1/tasks/:id           ()

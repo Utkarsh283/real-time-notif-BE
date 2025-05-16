@@ -3,8 +3,8 @@ const { postNotification, totalNotifications, getHistory } = require('../../../c
 
 const notificationRouter = express.Router();
 notificationRouter.post('/', postNotification);
-notificationRouter.get('/', totalNotifications);
-notificationRouter.get('/', getHistory);
+notificationRouter.get('/total', totalNotifications);
+notificationRouter.get('/history', getHistory);
 
 
 module.exports = notificationRouter;
