@@ -27,6 +27,9 @@ exports.postNotification = async function (req, res) {
   }
 };
 
+
+
+
 exports.getHistory = async function (req, res) {
   try {
     const notifications = await Notification.find();
