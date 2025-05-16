@@ -32,7 +32,7 @@ exports.postNotification = async function (req, res) {
 
 exports.getHistory = async function (req, res) {
   const { role } = req.user;
-  const isAdmin = role === UserRolesEnum.ADMIN;
+  const isAdmin = role === "ADMIN";
 
   try {
     const query = isAdmin ? {} : { users: req.user._id };
