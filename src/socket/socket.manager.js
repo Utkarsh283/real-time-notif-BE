@@ -107,6 +107,17 @@ const broadcastNotification = (data) => {
   if (io) io.emit('notification', data);
 };
 
+const broadcastTask = (data) => {
+  if (io) io.emit('task', data);
+};
+
+const broadcastUserEvent = (event, data) => {
+  if (io) io.emit(event, data);
+};
+
+
+
+
 const emitClientCount = () => {
   const clientCount = io.engine.clientsCount;
   io.emit('clientCount', clientCount);
