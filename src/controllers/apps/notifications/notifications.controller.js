@@ -1,15 +1,22 @@
-const {Notification} = require('../../../models/apps/notifications/notifications.models.js');
+const { Notification } = require('../../../models/apps/notifications/notifications.models.js');
 const { broadcastNotification } = require('../../../socket/socket.manager.js');
 const { validatePayload } = require('../../../utils/validatePayload.js');
+const { User } = require('../../../models/apps/auth/user.models.js');
 
 exports.postNotification = async function (req, res) {
-  const { title, message, type } = req.body;
+  const { title, message, type, users } = req.body;
 
   const error = validatePayload(req.body);
   if (error) return res.status(400).json({ error });
 
   try {
-    const notification = new Notification({ title, message, type });
+    const userRefs = users === 'ALL' 
+      ? await User.find().select('_id') 
+      : users && users.length > 0 
+        ? await User.find({ username: { $in: users } }).select('_id') 
+        : [];
+
+    const notification = new Notification({ title, message, type, creator: req.user._id, users: userRefs.map(user => user._id) });
     const savedNotification = await notification.save();
 
     broadcastNotification(savedNotification);
