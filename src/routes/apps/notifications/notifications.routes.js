@@ -4,7 +4,7 @@ const { verifyJWT, verifyAdmin } = require('../../../middlewares/auth.middleware
 
 const notificationRouter = express.Router();
 notificationRouter.post('/', verifyJWT , verifyAdmin , postNotification);
-notificationRouter.get('/total', totalNotifications);
+notificationRouter.get('/total' , totalNotifications);
 notificationRouter.get('/history', getHistory);
 
 

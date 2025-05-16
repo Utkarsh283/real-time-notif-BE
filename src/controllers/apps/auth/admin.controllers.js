@@ -14,7 +14,28 @@ const getAllTasks = asyncHandler(async (req, res) => {
   if (!Task) {
     throw new ApiError(500, "Task model not defined");
   }
-  const tasks = await Task.find();
+  const tasks = await Task.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$user",
+      },
+    },
+  ]);
   return res.status(200).json(new ApiResponse(200, tasks, "All tasks fetched successfully"));
 });
 

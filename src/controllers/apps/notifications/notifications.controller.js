@@ -1,4 +1,4 @@
-const Notification = require('../../../models/apps/notifications/notifications.models.js');
+const {Notification} = require('../../../models/apps/notifications/notifications.models.js');
 const { broadcastNotification } = require('../../../socket/socket.manager.js');
 const { validatePayload } = require('../../../utils/validatePayload.js');
 
