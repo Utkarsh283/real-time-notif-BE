@@ -6,19 +6,26 @@ const User = require('../models/apps/auth/user.models.js');
 let io;
 
 const setupSocket = (server) => {
+  if (!server) throw new Error('Server is required to setup socket.io');
+
   io = new Server(server, {
     cors: { origin: '*' },
   });
 
-  // Client connection handler
   io.on('connection', (socket) => {
+    if (!socket) throw new Error('Socket is required for connection event');
+
     console.log(`Client connected: ${socket.id}`);
     emitClientCount();
 
-    // Join user-specific room
-    socket.on('join', (userId) => {
-      socket.join(userId);
-      console.log(`User ${userId} joined room ${userId}`);
+    // Join user-specific room using MongoDB _id
+    socket.on('join', (users) => {
+      if (!users) {
+        console.warn('User ID missing in join event');
+        return;
+      }
+      socket.join(users);
+      console.log(`User ${users} joined room`);
     });
 
     socket.on('disconnect', () => {
@@ -31,39 +38,69 @@ const setupSocket = (server) => {
   const changeStream = Notification.watch([], { fullDocument: 'updateLookup' });
 
   changeStream.on('change', (change) => {
-    if (change.operationType === 'insert') {
-      const newNotification = change.fullDocument;
-      const { users } = newNotification;
+    if (change.operationType !== 'insert') return;
 
-      // Emit only to the users mentioned in the notification
-      users.forEach((user) => {
-        const userId = user.toString();
-        io.to(userId).emit('new-notification', newNotification);
-        console.log(`Broadcasted new notification to user: ${userId}`);
-      });
+    const newNotification = change.fullDocument;
+    const { users } = newNotification;
+
+    if (!users || users.length === 0) {
+      console.warn('Notification has no target users');
+      return;
     }
+
+    users.forEach((userId) => {
+      if (!userId) return;
+
+      io.to(userId.toString()).emit('new-notification', newNotification);
+      console.log(`📨 Notification sent to user: ${userId}`);
+    });
   });
 };
 
-// Optional: You can still use this if you want to broadcast general data
-const broadcastNotification = (data) => {
-  if (io) {
-    // Uncomment only if you want to broadcast to all (not per-user):
-    // io.emit('notification', data);
+// Emit notification only to mentioned users
+const broadcastNotification = (notification) => {
+  if (!io || !notification || !notification.users) {
+    console.warn('Invalid notification or socket.io not setup');
+    return;
   }
+
+  notification.users.forEach((userId) => {
+    io.to(userId.toString()).emit('notification', notification);
+    console.log(`📢 Notification broadcasted to: ${userId}`);
+  });
 };
 
+// Optional global task broadcast
 const broadcastTask = (data) => {
-  if (io) io.emit('task', data);
+  if (!io) {
+    console.warn('Socket.io is not initialized');
+    return;
+  }
+
+  io.emit('task', data);
 };
 
+// Emit custom user events
 const broadcastUserEvent = (event, data) => {
-  if (io) io.emit(event, data);
+  if (!io) {
+    console.warn('Socket.io is not initialized');
+    return;
+  }
+
+  io.emit(event, data);
 };
 
+// Emit number of connected clients
 const emitClientCount = () => {
+  if (!io) return;
+
   const clientCount = io.engine.clientsCount;
   io.emit('clientCount', clientCount);
 };
 
-module.exports = { setupSocket, broadcastNotification, broadcastTask, broadcastUserEvent };
+module.exports = {
+  setupSocket,
+  broadcastNotification,
+  broadcastTask,
+  broadcastUserEvent,
+};
